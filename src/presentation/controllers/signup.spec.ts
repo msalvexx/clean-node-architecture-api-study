@@ -48,9 +48,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParameterError('name'))
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should return 400 if no email is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
@@ -64,9 +61,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParameterError('email'))
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should return 400 if no password is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
@@ -80,9 +74,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParameterError('password'))
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should return 400 if no password confirmation is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
@@ -96,9 +87,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParameterError('passwordConfirmation'))
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should return 400 if an invalid email is provided', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
@@ -114,9 +102,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParameterError('email'))
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should call EmailValidator with correct email', () => {
     const { sut, emailValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
@@ -131,9 +116,6 @@ describe('SignUp Controller', () => {
     sut.handle(httpRequest)
     expect(isValidSpy).toBeCalledWith('any@mail.com')
   })
-})
-
-describe('SignUp Controller', () => {
   test('Should return 500 if EmailValidator throws', () => {
     const emailValidatorStub = makeEmailValidatorWithError()
     const sut = new SignUpController(emailValidatorStub)
