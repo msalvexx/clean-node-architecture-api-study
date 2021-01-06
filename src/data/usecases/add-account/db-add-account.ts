@@ -13,6 +13,6 @@ export class DbAddAccount implements AddAccount {
       ...accountModel,
       password: hashedPassword
     })
-    return new Promise(resolve => resolve(account))
+    return account
   }
 }
