@@ -1,6 +1,7 @@
+import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Authentication } from '../../../domain/usecases/authentication'
 import { InvalidParameterError, MissingParameterError } from '../../errors'
-import { badRequest, ok, serverError } from '../../helpers/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 import { EmailValidator } from '../signup/signup.protocols'
 
@@ -25,6 +26,9 @@ export class LoginController implements Controller {
       await this.authentication.auth(email, password)
       return ok('ok')
     } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        return unauthorized()
+      }
       return serverError(error)
     }
   }
