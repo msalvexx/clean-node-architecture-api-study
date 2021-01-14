@@ -1,4 +1,4 @@
-import { RequiredFieldValidation } from '../../../presentation/helpers/validators/required-field/required-field-validation'
+import { RequiredFieldValidation } from '../../../presentation/helpers/validators'
 import { Validation } from '../../../presentation/protocols/validation'
 
 export const makeRequiredFieldsValidators = (requiredFields: string[]): Validation[] => {
