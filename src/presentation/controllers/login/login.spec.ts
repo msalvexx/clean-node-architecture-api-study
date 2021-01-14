@@ -1,7 +1,7 @@
 import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Authentication } from '../../../domain/usecases/authentication'
 import { InvalidParameterError, MissingParameterError } from '../../errors'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols'
 import { EmailValidator } from '../../protocols/email-validator'
 import { LoginController } from './login'
@@ -108,5 +108,11 @@ describe('Login Controller', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return access token if Authentication succeeds', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok('any_token'))
   })
 })
