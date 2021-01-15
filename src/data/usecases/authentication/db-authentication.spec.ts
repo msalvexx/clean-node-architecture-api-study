@@ -1,13 +1,8 @@
-import { NotFoundModelError } from '../../errors/not-found-model-error'
-import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
-import { Account } from '../../../domain/models/account'
-import { AuthenticationModel } from '../../../domain/usecases/authentication'
-import { InvalidHashError } from '../../errors/invalid-hash-error'
-import { HashComparer } from '../../protocols/criptography/hash-comparer'
-import { TokenGenerator } from '../../protocols/criptography/token-generator'
-import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
 import { DbAuthentication } from './db-authentication'
-import { UpdateAccessTokenModel, UpdateAccessTokenRepository } from '../../protocols/db/account/update-access-token-repository'
+import {
+  NotFoundModelError, UnauthorizedError, Account, AuthenticationModel, InvalidHashError, HashComparer,
+  TokenGenerator, LoadAccountByEmailRepository, UpdateAccessTokenModel, UpdateAccessTokenRepository
+} from './db-authentication.protocols'
 
 interface SutTypes {
   sut: DbAuthentication
