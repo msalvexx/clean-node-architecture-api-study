@@ -1,3 +1,5 @@
+import { NotFoundModelError } from '../../../domain/errors/not-found-model-error'
+import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Account } from '../../../domain/models/account'
 import { AuthenticationModel } from '../../../domain/usecases/authentication'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
@@ -52,10 +54,10 @@ describe('DbAuthentication', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return null if LoadAccountByEmailRepository return null', async () => {
+  test('Should throw UnauthorizedError if LoadAccountByEmailRepository returns NotFoundModelError', async () => {
     const { sut, loadAccountByEmailRepository } = makeSut()
-    jest.spyOn(loadAccountByEmailRepository, 'load').mockReturnValueOnce(null)
-    const accessToken = await sut.auth(makeFakeCredential())
-    expect(accessToken).toBeNull()
+    jest.spyOn(loadAccountByEmailRepository, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new NotFoundModelError('account'))))
+    const promise = sut.auth(makeFakeCredential())
+    await expect(promise).rejects.toThrowError(new UnauthorizedError())
   })
 })
