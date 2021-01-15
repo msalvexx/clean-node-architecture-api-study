@@ -1,7 +1,8 @@
-import { ok } from '../../../presentation/helpers/http/http-helper'
+import { badRequest, ok } from '../../../presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
 import { Account } from '../../../domain/models/account'
 import { DefaultErrorControllerDecorator } from './error'
+import { ValidationError } from '../../../presentation/errors/validation-error'
 
 interface SutTypes {
   sut: DefaultErrorControllerDecorator
@@ -51,5 +52,15 @@ describe('Controller Decorator', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeAccount()))
+  })
+
+  test('Should return bad request if controller throws any validation error', async () => {
+    const { sut, controllerStub } = makeSut()
+    const error = new ValidationError()
+    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(() => {
+      throw error
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(error))
   })
 })
