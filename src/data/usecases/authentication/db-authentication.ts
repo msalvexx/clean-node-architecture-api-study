@@ -1,10 +1,14 @@
 import { NotFoundModelError } from '../../../domain/errors/not-found-model-error'
 import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Authentication, AuthenticationModel } from '../../../domain/usecases/authentication'
+import { HashComparer } from '../../protocols/criptography/hash-comparer'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
 
 export class DbAuthentication implements Authentication {
-  constructor (private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository) { }
+  constructor (
+    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly hashComparer: HashComparer
+  ) { }
 
   async auth (credentials: AuthenticationModel): Promise<string> {
     try {
@@ -22,7 +26,8 @@ export class DbAuthentication implements Authentication {
   }
 
   private async tryLogUser (credentials: AuthenticationModel): Promise<string> {
-    await this.loadAccountByEmailRepository.load(credentials.email)
+    const account = await this.loadAccountByEmailRepository.load(credentials.email)
+    await this.hashComparer.compare(credentials.password, account.password)
     return null
   }
 }
