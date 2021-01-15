@@ -10,7 +10,9 @@
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js --runInBand",
     "test:staged": "npm test -- --findRelatedTests --maxWorkers=4",
-    "test:ci": "npm test -- --coverage"
+    "test:ci": "npm test -- --coverage",
+    "test:verbose:unit": "npm run test:verbose -- --watch -c jest-unit-config.js",
+    "test:verbose:integration": "npm run test:verbose -- --watch -c jest-integration-config.js --runInBand" 
   },
   "keywords": [],
   "author": "",
