@@ -1,6 +1,6 @@
 import { DbAuthentication } from './db-authentication'
 import {
-  NotFoundModelError, UnauthorizedError, Account, AuthenticationModel, InvalidHashError, HashComparer,
+  NotFoundModelError, InvalidCredentialsError, Account, AuthenticationModel, InvalidHashError, HashComparer,
   TokenGenerator, LoadAccountByEmailRepository, UpdateAccessTokenModel, UpdateAccessTokenRepository
 } from './db-authentication.protocols'
 
@@ -97,7 +97,7 @@ describe('DbAuthentication', () => {
     const { sut, loadAccountByEmailRepositoryStub: loadAccountByEmailRepository } = makeSut()
     jest.spyOn(loadAccountByEmailRepository, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new NotFoundModelError('account'))))
     const promise = sut.auth(makeFakeCredential())
-    await expect(promise).rejects.toThrowError(new UnauthorizedError())
+    await expect(promise).rejects.toThrowError(new InvalidCredentialsError())
   })
 
   test('Should call HashComparer with correct password ', async () => {
@@ -111,7 +111,7 @@ describe('DbAuthentication', () => {
     const { sut, hashComparerStub } = makeSut()
     jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise((resolve, reject) => reject(new InvalidHashError())))
     const promise = sut.auth(makeFakeCredential())
-    await expect(promise).rejects.toThrowError(new UnauthorizedError())
+    await expect(promise).rejects.toThrowError(new InvalidCredentialsError())
   })
 
   test('Should throw if HashComparer throws ', async () => {

@@ -1,5 +1,5 @@
 import {
-  NotFoundModelError, UnauthorizedError, AuthenticationModel, InvalidHashError, HashComparer,
+  NotFoundModelError, InvalidCredentialsError, AuthenticationModel, InvalidHashError, HashComparer,
   TokenGenerator, LoadAccountByEmailRepository, UpdateAccessTokenRepository, Authentication
 } from './db-authentication.protocols'
 
@@ -27,7 +27,7 @@ export class DbAuthentication implements Authentication {
   private throwUnauthorizeOnErrors (error: any): void {
     for (const errorThatThrows of [NotFoundModelError, InvalidHashError]) {
       if (error instanceof errorThatThrows) {
-        throw new UnauthorizedError()
+        throw new InvalidCredentialsError()
       }
     }
   }

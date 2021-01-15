@@ -1,4 +1,4 @@
-export * from '../../../domain/errors/unauthorized-error'
+export * from '../../../domain/errors/invalid-credentials-error'
 export * from '../../../domain/models/account'
 export * from '../../../domain/usecases/authentication'
 export * from '../../errors/not-found-model-error'

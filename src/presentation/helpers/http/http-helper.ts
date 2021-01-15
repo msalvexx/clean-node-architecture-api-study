@@ -1,4 +1,4 @@
-import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
+import { InvalidCredentialsError } from '../../../domain/errors/invalid-credentials-error'
 import { ServerError } from '../../errors'
 import { HttpResponse } from '../../protocols'
 
@@ -19,5 +19,5 @@ export const ok = (data: any): HttpResponse => ({
 
 export const unauthorized = (): HttpResponse => ({
   statusCode: 401,
-  body: new UnauthorizedError()
+  body: new InvalidCredentialsError()
 })

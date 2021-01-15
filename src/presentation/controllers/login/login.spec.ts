@@ -1,6 +1,6 @@
 import { MissingParameterError } from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http/http-helper'
-import { HttpRequest, UnauthorizedError, Authentication, AuthenticationModel } from './login.protocols'
+import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel } from './login.protocols'
 import { LoginController } from './login'
 import { Validation } from '../../protocols/validation'
 
@@ -59,7 +59,7 @@ describe('Login Controller', () => {
   test('Should return 401 if Authentication throws unauthorized error', async () => {
     const { sut, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
-      throw new UnauthorizedError()
+      throw new InvalidCredentialsError()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(unauthorized())
