@@ -2,6 +2,7 @@ import { NotFoundModelError } from '../../../domain/errors/not-found-model-error
 import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Account } from '../../../domain/models/account'
 import { AuthenticationModel } from '../../../domain/usecases/authentication'
+import { InvalidHashError } from '../../errors/invalid-hash-error'
 import { HashComparer } from '../../protocols/criptography/hash-comparer'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
 import { DbAuthentication } from './db-authentication'
@@ -78,5 +79,12 @@ describe('DbAuthentication', () => {
     const compareSpy = jest.spyOn(hashComparerStub, 'compare')
     await sut.auth(makeFakeCredential())
     expect(compareSpy).toHaveBeenCalledWith('any_password', 'hashed_password')
+  })
+
+  test('Should throw Unauthorized if HashComparer throws InvalidHashError ', async () => {
+    const { sut, hashComparerStub } = makeSut()
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise((resolve, reject) => reject(new InvalidHashError())))
+    const promise = sut.auth(makeFakeCredential())
+    await expect(promise).rejects.toThrowError(new UnauthorizedError())
   })
 })
