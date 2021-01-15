@@ -1,8 +1,7 @@
 import { MissingParameterError } from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http/http-helper'
-import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel } from './login.protocols'
+import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel, Validation } from './login.protocols'
 import { LoginController } from './login'
-import { Validation } from '../../protocols/validation'
 
 interface SutTypes {
   sut: LoginController
@@ -12,7 +11,7 @@ interface SutTypes {
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Error {
+    validate (input: any): void {
       return null
     }
   }
@@ -90,7 +89,9 @@ describe('Login Controller', () => {
 
   test('Should return 400 if validation returns an error', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParameterError('any_field'))
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new MissingParameterError('any_field')
+    })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParameterError('any_field')))
   })

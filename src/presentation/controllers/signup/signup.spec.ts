@@ -15,7 +15,7 @@ const makeAddAccount = (): AddAccount => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Error {
+    validate (input: any): void {
       return null
     }
   }
@@ -88,7 +88,9 @@ describe('SignUp Controller', () => {
   })
   test('Should return 400 if validation returns an error', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParameterError('any_field'))
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new MissingParameterError('any_field')
+    })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParameterError('any_field')))
   })
