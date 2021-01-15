@@ -12,7 +12,7 @@ export class DbAuthentication implements Authentication {
 
   async auth (credentials: AuthenticationModel): Promise<string> {
     try {
-      return await this.tryLogUser(credentials)
+      return await this.tryAuthenticate(credentials)
     } catch (e) {
       this.throwUnauthorizedWhenNotFound(e)
       throw e
@@ -25,7 +25,7 @@ export class DbAuthentication implements Authentication {
     }
   }
 
-  private async tryLogUser (credentials: AuthenticationModel): Promise<string> {
+  private async tryAuthenticate (credentials: AuthenticationModel): Promise<string> {
     const account = await this.loadAccountByEmailRepository.load(credentials.email)
     await this.hashComparer.compare(credentials.password, account.password)
     return null
