@@ -1,4 +1,4 @@
-import { badRequest, ok } from '../../../presentation/helpers/http/http-helper'
+import { badRequest, ok, serverError } from '../../../presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
 import { Account } from '../../../domain/models/account'
 import { DefaultErrorControllerDecorator } from './error'
@@ -62,5 +62,15 @@ describe('Controller Decorator', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(error))
+  })
+
+  test('Should return server error if controller throws any other error', async () => {
+    const { sut, controllerStub } = makeSut()
+    const error = new Error()
+    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(() => {
+      throw error
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
