@@ -26,11 +26,11 @@ export class DbAuthentication implements Authentication {
   private async tryAuthenticate (credentials: AuthenticationModel): Promise<string> {
     const account = await this.loadAccountByEmailRepository.load(credentials.email)
     await this.hashComparer.compare(credentials.password, account.password)
-    await this.tokenGenerator.generate(account.id)
-    return null
+    const accessToken = await this.tokenGenerator.generate(account.id)
+    return accessToken
   }
 
-  unauthorizeOnErrors (e: any, errorsToThrowUnauthorized: any[]): void {
+  private unauthorizeOnErrors (e: any, errorsToThrowUnauthorized: any[]): void {
     for (const errorThatThrows of errorsToThrowUnauthorized) {
       if (e instanceof errorThatThrows) {
         throw new UnauthorizedError()
