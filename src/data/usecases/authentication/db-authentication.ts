@@ -8,31 +8,25 @@ import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-ac
 
 export class DbAuthentication implements Authentication {
   constructor (
-    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
-    private readonly hashComparer: HashComparer,
-    private readonly tokenGenerator: TokenGenerator
+    private readonly account: LoadAccountByEmailRepository,
+    private readonly hash: HashComparer,
+    private readonly token: TokenGenerator
   ) { }
 
   async auth (credentials: AuthenticationModel): Promise<string> {
     try {
-      return await this.tryAuthenticate(credentials)
-    } catch (e) {
-      const errorsToThrowUnauthorized = [NotFoundModelError, InvalidHashError]
-      this.unauthorizeOnErrors(e, errorsToThrowUnauthorized)
-      throw e
+      const account = await this.account.load(credentials.email)
+      await this.hash.compare(credentials.password, account.password)
+      return await this.token.generate(account.id)
+    } catch (error) {
+      this.throwUnauthorizeOnErrors(error)
+      throw error
     }
   }
 
-  private async tryAuthenticate (credentials: AuthenticationModel): Promise<string> {
-    const account = await this.loadAccountByEmailRepository.load(credentials.email)
-    await this.hashComparer.compare(credentials.password, account.password)
-    const accessToken = await this.tokenGenerator.generate(account.id)
-    return accessToken
-  }
-
-  private unauthorizeOnErrors (e: any, errorsToThrowUnauthorized: any[]): void {
-    for (const errorThatThrows of errorsToThrowUnauthorized) {
-      if (e instanceof errorThatThrows) {
+  private throwUnauthorizeOnErrors (error: any): void {
+    for (const errorThatThrows of [NotFoundModelError, InvalidHashError]) {
+      if (error instanceof errorThatThrows) {
         throw new UnauthorizedError()
       }
     }
