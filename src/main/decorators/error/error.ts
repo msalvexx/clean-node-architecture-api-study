@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../presentation/errors/validation-error'
-import { badRequest } from '../../../presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '../../../presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
 
 export class DefaultErrorControllerDecorator implements Controller {
@@ -12,6 +12,7 @@ export class DefaultErrorControllerDecorator implements Controller {
       if (error instanceof ValidationError) {
         return badRequest(error)
       }
+      return serverError(error)
     }
   }
 }
