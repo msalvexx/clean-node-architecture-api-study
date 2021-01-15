@@ -1,4 +1,4 @@
-import { NotFoundModelError } from '../../../domain/errors/not-found-model-error'
+import { NotFoundModelError } from '../../errors/not-found-model-error'
 import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Account } from '../../../domain/models/account'
 import { AuthenticationModel } from '../../../domain/usecases/authentication'

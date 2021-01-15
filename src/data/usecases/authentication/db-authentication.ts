@@ -1,4 +1,4 @@
-import { NotFoundModelError } from '../../../domain/errors/not-found-model-error'
+import { NotFoundModelError } from '../../errors/not-found-model-error'
 import { UnauthorizedError } from '../../../domain/errors/unauthorized-error'
 import { Authentication, AuthenticationModel } from '../../../domain/usecases/authentication'
 import { InvalidHashError } from '../../errors/invalid-hash-error'
