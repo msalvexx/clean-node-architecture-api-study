@@ -4,7 +4,7 @@ import { Authentication, AuthenticationModel } from '../../../domain/usecases/au
 import { InvalidHashError } from '../../errors/invalid-hash-error'
 import { HashComparer } from '../../protocols/criptography/hash-comparer'
 import { TokenGenerator } from '../../protocols/criptography/token-generator'
-import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
 
 export class DbAuthentication implements Authentication {
   constructor (
