@@ -19,12 +19,12 @@ export class DbAuthentication implements Authentication {
       await this.accessTokenRepository.update({ id: account.id, token })
       return token
     } catch (error) {
-      this.throwUnauthorizeOnErrors(error)
+      this.throwInvalidCredentialsOnErrors(error)
       throw error
     }
   }
 
-  private throwUnauthorizeOnErrors (error: any): void {
+  private throwInvalidCredentialsOnErrors (error: any): void {
     for (const errorThatThrows of [NotFoundModelError, InvalidHashError]) {
       if (error instanceof errorThatThrows) {
         throw new InvalidCredentialsError()
