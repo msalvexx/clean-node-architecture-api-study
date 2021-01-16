@@ -1,13 +1,13 @@
 import {
   NotFoundModelError, InvalidCredentialsError, AuthenticationModel, InvalidHashError, HashComparer,
-  TokenGenerator, LoadAccountByEmailRepository, UpdateAccessTokenRepository, Authentication
+  Encrypter, LoadAccountByEmailRepository, UpdateAccessTokenRepository, Authentication
 } from './db-authentication.protocols'
 
 export class DbAuthentication implements Authentication {
   constructor (
     private readonly accountRepository: LoadAccountByEmailRepository,
     private readonly hash: HashComparer,
-    private readonly token: TokenGenerator,
+    private readonly token: Encrypter,
     private readonly accessTokenRepository: UpdateAccessTokenRepository
   ) { }
 
@@ -15,7 +15,7 @@ export class DbAuthentication implements Authentication {
     try {
       const account = await this.accountRepository.load(credentials.email)
       await this.hash.compare(credentials.password, account.password)
-      const token = await this.token.generate(account.id)
+      const token = await this.token.encrypt(account.id)
       await this.accessTokenRepository.update({ id: account.id, token })
       return token
     } catch (error) {
