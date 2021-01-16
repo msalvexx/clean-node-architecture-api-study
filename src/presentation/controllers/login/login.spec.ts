@@ -1,6 +1,7 @@
 import { ok, unauthorized } from '../../helpers/http/http-helper'
 import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel, Validation } from './login.protocols'
 import { LoginController } from './login'
+import { ValidationError } from '../signup/signup.protocols'
 
 interface SutTypes {
   sut: LoginController
@@ -77,9 +78,20 @@ describe('Login Controller', () => {
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
-  test('Should throw if any dependency throws', async () => {
-    const { sut } = makeSut()
-    jest.spyOn(sut, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+  test('Should throw if validation throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new ValidationError()
+    })
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should throw if authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow()
   })

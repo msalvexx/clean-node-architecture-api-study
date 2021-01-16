@@ -57,9 +57,7 @@ describe('Controller Decorator', () => {
   test('Should return bad request if controller throws any validation error', async () => {
     const { sut, controllerStub } = makeSut()
     const error = new ValidationError()
-    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(() => {
-      throw error
-    })
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => reject(error)))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(error))
   })
@@ -67,9 +65,7 @@ describe('Controller Decorator', () => {
   test('Should return server error if controller throws any other error', async () => {
     const { sut, controllerStub } = makeSut()
     const error = new Error()
-    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(() => {
-      throw error
-    })
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => reject(error)))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(error))
   })
