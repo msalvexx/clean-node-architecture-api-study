@@ -12,7 +12,7 @@
     "test:staged": "npm test -- --findRelatedTests --maxWorkers=4",
     "test:ci": "npm test -- --coverage",
     "test:verbose:unit": "npm run test:verbose -- --watch -c jest-unit-config.js",
-    "test:verbose:integration": "npm run test:verbose -- --watch -c jest-integration-config.js --runInBand" 
+    "test:verbose:integration": "npm run test:verbose -- --watch -c jest-integration-config.js --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
+    "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.9",
     "@types/jest": "^26.0.19",
     "@types/mongodb": "^3.6.3",
