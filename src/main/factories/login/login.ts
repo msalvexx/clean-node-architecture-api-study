@@ -8,7 +8,7 @@ import { makeLoginValidation } from './login-validation'
 export const makeLoginController = (): Controller => {
   const validationComposite = makeLoginValidation()
   const loginController = new LoginController(validationComposite, null)
+  const defaultErrorControllerDecorator = new DefaultErrorControllerDecorator(loginController)
   const logErrorRepository = new LogMongoRepository()
-  const logControllerDecorator = new LogControllerDecorator(loginController, logErrorRepository)
-  return new DefaultErrorControllerDecorator(logControllerDecorator)
+  return new LogControllerDecorator(defaultErrorControllerDecorator, logErrorRepository)
 }

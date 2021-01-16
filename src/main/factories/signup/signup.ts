@@ -15,7 +15,7 @@ export const makeSignUpController = (): Controller => {
   const addAccount = new DbAddAccount(encrypter, addAccountRepository)
   const validationComposite = makeSignUpValidation()
   const signUpController = new SignUpController(addAccount, validationComposite)
+  const defaultErrorControllerDecorator = new DefaultErrorControllerDecorator(signUpController)
   const logMongoRepository = new LogMongoRepository()
-  const logControllerDecorator = new LogControllerDecorator(signUpController, logMongoRepository)
-  return new DefaultErrorControllerDecorator(logControllerDecorator)
+  return new LogControllerDecorator(defaultErrorControllerDecorator, logMongoRepository)
 }
