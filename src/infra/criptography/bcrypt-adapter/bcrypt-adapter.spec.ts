@@ -38,6 +38,12 @@ describe('BCrypt Adapter', () => {
     await expect(promise).rejects.toThrow(new InvalidHashError())
   })
 
+  test('Should return nothing if compare succeeds', async () => {
+    const sut = makeSut()
+    const result = await sut.compare('any_value', 'any_hash')
+    expect(result).toBeFalsy()
+  })
+
   test('Should return hash on success', async () => {
     const sut = makeSut()
     const hashedValue = await sut.hash('any_value')
