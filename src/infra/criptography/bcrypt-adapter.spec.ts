@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { InvalidHashError } from '../../data/errors/invalid-hash-error'
 import { BCryptAdapter } from './bcrypt-adapter'
 
 jest.mock('bcrypt', () => ({
@@ -28,6 +29,13 @@ describe('BCrypt Adapter', () => {
     const compareSpy = jest.spyOn(bcrypt, 'compare')
     await sut.compare('any_value', 'any_hash')
     expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash')
+  })
+
+  test('Should throw InvalidHashError if compare fails', async () => {
+    const sut = makeSut()
+    jest.spyOn(bcrypt, 'compare').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    const promise = sut.compare('any_value', 'any_hash')
+    await expect(promise).rejects.toThrow(new InvalidHashError())
   })
 
   test('Should return hash on success', async () => {
