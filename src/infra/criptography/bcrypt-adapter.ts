@@ -1,13 +1,17 @@
 import { Hasher } from '../../data/protocols/criptography/hasher'
 import bcrypt from 'bcrypt'
 import { HashComparer } from '../../data/protocols/criptography/hash-comparer'
+import { InvalidHashError } from '../../data/errors/invalid-hash-error'
 
 export class BCryptAdapter implements Hasher, HashComparer {
   constructor (private readonly salt: number) {
   }
 
   async compare (value: string, hashed: string): Promise<void> {
-    await bcrypt.compare(value, hashed)
+    const matches = await bcrypt.compare(value, hashed)
+    if (!matches) {
+      throw new InvalidHashError()
+    }
   }
 
   async hash (value: string): Promise<string> {
