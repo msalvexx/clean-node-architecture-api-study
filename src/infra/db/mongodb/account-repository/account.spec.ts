@@ -1,4 +1,5 @@
 import { Collection } from 'mongodb'
+import { NotFoundModelError } from '../../../../data/errors/not-found-model-error'
 import { MongoHelper } from '../helpers/mongo.helper'
 import { AccountMongoRepository } from './account'
 
@@ -57,5 +58,11 @@ describe('Account Mongo Repository', () => {
       email: 'any_email@email.com',
       password: 'any_password'
     })
+  })
+
+  test('Should throw NotFoundModelError on loadByEmail returns null', async () => {
+    const sut = makeSut()
+    const promise = sut.loadByEmail('any_email@email.com')
+    await expect(promise).rejects.toThrow(new NotFoundModelError('account'))
   })
 })
