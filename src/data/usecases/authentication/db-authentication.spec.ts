@@ -14,7 +14,7 @@ interface SutTypes {
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async load (email: string): Promise<Account> {
+    async loadByEmail (email: string): Promise<Account> {
       const account: Account = {
         id: 'any_id',
         name: 'any_name',
@@ -81,21 +81,21 @@ const makeFakeCredential = (): AuthenticationModel => ({
 describe('DbAuthentication', () => {
   test('Should call LoadAccountByEmailRepository with correct email ', async () => {
     const { sut, loadAccountByEmailRepositoryStub: loadAccountByEmailRepository } = makeSut()
-    const loadSpy = jest.spyOn(loadAccountByEmailRepository, 'load')
+    const loadSpy = jest.spyOn(loadAccountByEmailRepository, 'loadByEmail')
     await sut.auth(makeFakeCredential())
     expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
   test('Should throw if LoadAccountByEmailRepository throws', async () => {
     const { sut, loadAccountByEmailRepositoryStub: loadAccountByEmailRepository } = makeSut()
-    jest.spyOn(loadAccountByEmailRepository, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(loadAccountByEmailRepository, 'loadByEmail').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.auth(makeFakeCredential())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should throw UnauthorizedError if LoadAccountByEmailRepository returns NotFoundModelError', async () => {
     const { sut, loadAccountByEmailRepositoryStub: loadAccountByEmailRepository } = makeSut()
-    jest.spyOn(loadAccountByEmailRepository, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new NotFoundModelError('account'))))
+    jest.spyOn(loadAccountByEmailRepository, 'loadByEmail').mockReturnValueOnce(new Promise((resolve, reject) => reject(new NotFoundModelError('account'))))
     const promise = sut.auth(makeFakeCredential())
     await expect(promise).rejects.toThrowError(new InvalidCredentialsError())
   })

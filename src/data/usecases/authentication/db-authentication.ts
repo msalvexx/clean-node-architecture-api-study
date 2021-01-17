@@ -5,7 +5,7 @@ import {
 
 export class DbAuthentication implements Authentication {
   constructor (
-    private readonly accountRepository: LoadAccountByEmailRepository,
+    private readonly repo: LoadAccountByEmailRepository,
     private readonly hash: HashComparer,
     private readonly token: Encrypter,
     private readonly accessTokenRepository: UpdateAccessTokenRepository
@@ -13,7 +13,7 @@ export class DbAuthentication implements Authentication {
 
   async auth (credentials: AuthenticationModel): Promise<string> {
     try {
-      const account = await this.accountRepository.load(credentials.email)
+      const account = await this.repo.loadByEmail(credentials.email)
       await this.hash.compare(credentials.password, account.password)
       const token = await this.token.encrypt(account.id)
       await this.accessTokenRepository.update({ id: account.id, token })
