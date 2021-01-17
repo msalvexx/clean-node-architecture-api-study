@@ -16,7 +16,7 @@ export class DbAuthentication implements Authentication {
       const account = await this.repo.loadByEmail(credentials.email)
       await this.hash.compare(credentials.password, account.password)
       const token = await this.token.encrypt(account.id)
-      await this.accessTokenRepository.update({ id: account.id, token })
+      await this.accessTokenRepository.updateAccessToken({ id: account.id, token })
       return token
     } catch (error) {
       this.throwInvalidCredentialsOnErrors(error)
