@@ -65,4 +65,14 @@ describe('Account Mongo Repository', () => {
     const promise = sut.loadByEmail('any_email@email.com')
     await expect(promise).rejects.toThrow(new NotFoundModelError('account'))
   })
+
+  test('Should return nothing on updateAccessToken success', async () => {
+    const sut = makeSut()
+    const result = await accountCollection.insertOne(makeFakeAccount())
+    const fakeAccountId = result.ops.pop()._id
+    await sut.updateAccessToken({ id: fakeAccountId, token: 'any_token' })
+    const account = await accountCollection.findOne({ _id: fakeAccountId })
+    expect(account).toBeTruthy()
+    expect(account.accessToken).toBe('any_token')
+  })
 })
