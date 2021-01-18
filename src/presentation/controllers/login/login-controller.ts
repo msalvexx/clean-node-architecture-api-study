@@ -11,7 +11,7 @@ export class LoginController implements Controller {
     try {
       this.validation.validate(httpRequest.body)
       const accessToken = await this.authentication.auth(httpRequest.body)
-      return ok(accessToken)
+      return ok({ accessToken })
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         return unauthorized()
