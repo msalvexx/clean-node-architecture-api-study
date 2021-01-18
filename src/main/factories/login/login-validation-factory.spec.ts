@@ -1,8 +1,8 @@
-import { CompareFieldsValidation, ValidationComposite, EmailValidation } from '../../../presentation/helpers/validators'
-import { Validation } from '../../../presentation/protocols/validation'
+import { EmailValidation, ValidationComposite } from '../../../presentation/helpers/validators'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
+import { Validation } from '../../../presentation/protocols/validation'
 import { makeRequiredFieldsValidators } from '../validators/required-validators'
-import { makeSignUpValidation as sut } from './signup-validation'
+import { makeLoginValidation as sut } from './login-validation-factory'
 
 jest.mock('../../../presentation/helpers/validators/composite/validation-composite')
 
@@ -15,13 +15,12 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub()
 }
 
-describe('SignUp Validation Factory', () => {
+describe('Login Validation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     sut()
     const emailValidatorStub = makeEmailValidator()
     const validations: Validation[] = [
-      ...makeRequiredFieldsValidators(['name', 'email', 'password', 'passwordConfirmation']),
-      new CompareFieldsValidation('password', 'passwordConfirmation'),
+      ...makeRequiredFieldsValidators(['email', 'password']),
       new EmailValidation('email', emailValidatorStub)
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

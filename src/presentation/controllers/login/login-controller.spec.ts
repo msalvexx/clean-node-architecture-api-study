@@ -1,7 +1,7 @@
 import { ok, unauthorized } from '../../helpers/http/http-helper'
-import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel, Validation } from './login.protocols'
-import { LoginController } from './login'
-import { ValidationError } from '../signup/signup.protocols'
+import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationModel, Validation } from './login-controller.protocols'
+import { LoginController } from './login-controller'
+import { ValidationError } from '../signup/signup-controller.protocols'
 
 interface SutTypes {
   sut: LoginController
