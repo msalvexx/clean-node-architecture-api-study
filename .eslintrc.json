@@ -1,7 +1,7 @@
 {
     "extends": "standard-with-typescript",
     "parserOptions": {
-        "project": "./tsconfig.json"
+        "project": "./tsconfig.eslint.json"
     },
     "root": true,
     "rules": {
@@ -13,5 +13,5 @@
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-namespace": "off",
         "import/export": "off"
-      }
+    }
 }
