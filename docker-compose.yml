@@ -15,7 +15,7 @@ services:
     restart: always
     command: npm run debug
     volumes:
-      - ./dist:/usr/wwwroot/clean-node-api/dist
+      - ./dist/:/usr/wwwroot/clean-node-api/dist/
       - ./package.json:/usr/wwwroot/clean-node-api/package.json
     ports:
       - "5050:5050"
