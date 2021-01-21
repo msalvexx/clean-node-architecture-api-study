@@ -1,6 +1,6 @@
 import { AssertAccountExistsByEmailRepository } from '../../../../../data/usecases/authentication/db-authentication.protocols'
 import { UniqueEmailValidation } from './unique-validation'
-import { EmailDuplicatedError } from '../../../../errors/email-duplicated-error'
+import { AttributeDuplicatedError } from '../../../../errors/email-duplicated-error'
 
 interface SutTypes {
   sut: UniqueEmailValidation
@@ -37,7 +37,7 @@ describe('UniqueEmailValidation', () => {
     const { sut, repo } = makeSut()
     jest.spyOn(repo, 'exists').mockResolvedValueOnce(true)
     const promise = sut.validate({ email: 'any@mail.com' })
-    await expect(promise).rejects.toThrowError(new EmailDuplicatedError('any@mail.com'))
+    await expect(promise).rejects.toThrowError(new AttributeDuplicatedError('email'))
   })
 
   test('Should return nothing if email not exists', async () => {

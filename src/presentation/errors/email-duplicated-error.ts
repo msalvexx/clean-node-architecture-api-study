@@ -1,8 +1,8 @@
 import { ValidationError } from './validation-error'
 
-export class EmailDuplicatedError extends ValidationError {
-  constructor (email: string) {
-    super(`Email already exists: ${email}`)
+export class AttributeDuplicatedError extends ValidationError {
+  constructor (fieldName: string) {
+    super(`Attribute already exists: ${fieldName}`)
     this.name = 'EmailDuplicatedError'
   }
 }
