@@ -12,8 +12,8 @@ export class SignUpController implements Controller {
     this.validation.validate(httpRequest.body)
     const { passwordConfirmation, ...dataWithoutPasswordConfirmation } = httpRequest.body
     const { name, ...credentials } = dataWithoutPasswordConfirmation
-    const account = await this.addAccount.add(dataWithoutPasswordConfirmation)
-    await this.authentication.auth(credentials)
-    return ok(account)
+    await this.addAccount.add(dataWithoutPasswordConfirmation)
+    const token = await this.authentication.auth(credentials)
+    return ok({ accessToken: token })
   }
 }
