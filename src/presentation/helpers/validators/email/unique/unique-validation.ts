@@ -1,4 +1,5 @@
 import { AssertAccountExistsByEmailRepository } from '../../../../../data/usecases/authentication/db-authentication.protocols'
+import { EmailDuplicatedError } from '../../../../errors/email-duplicated-error'
 import { Validation } from '../../../../protocols/validation'
 
 export class UniqueEmailValidation implements Validation {
@@ -8,6 +9,9 @@ export class UniqueEmailValidation implements Validation {
   ) {}
 
   async validate (input: any): Promise<void> {
-    await this.repo.exists(input[this.fieldName])
+    const emailExists = await this.repo.exists(input[this.fieldName])
+    if (emailExists) {
+      return Promise.reject(new EmailDuplicatedError(input[this.fieldName]))
+    }
   }
 }
