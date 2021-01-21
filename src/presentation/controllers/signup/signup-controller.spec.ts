@@ -102,4 +102,12 @@ describe('SignUp Controller', () => {
     await sut.handle(makeFakeRequest())
     expect(authenticationSpy).toHaveBeenCalledWith(credentials)
   })
+  test('Should throw if authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow()
+  })
 })
