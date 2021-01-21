@@ -1,4 +1,5 @@
-import { CompareFieldsValidation, ValidationComposite, EmailValidation } from '../../../presentation/helpers/validators'
+import { AssertAccountExistsByEmailRepository } from '../../../data/usecases/authentication/db-authentication.protocols'
+import { CompareFieldsValidation, ValidationComposite, EmailValidation, UniqueEmailValidation } from '../../../presentation/helpers/validators'
 import { Validation } from '../../../presentation/protocols/validation'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 import { makeRequiredFieldsValidators } from '../validators/required-validators'
@@ -15,14 +16,25 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub()
 }
 
+const makeAssertAccountExistsByEmailRepository = (): AssertAccountExistsByEmailRepository => {
+  class AssertAccountExistsByEmailRepositoryStub implements AssertAccountExistsByEmailRepository {
+    async exists (email: string): Promise<boolean> {
+      return Promise.resolve(false)
+    }
+  }
+  return new AssertAccountExistsByEmailRepositoryStub()
+}
+
 describe('SignUp Validation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     sut()
     const emailValidatorStub = makeEmailValidator()
+    const assertAccountExistsByEmailRepositoryStub = makeAssertAccountExistsByEmailRepository()
     const validations: Validation[] = [
       ...makeRequiredFieldsValidators(['name', 'email', 'password', 'passwordConfirmation']),
       new CompareFieldsValidation('password', 'passwordConfirmation'),
-      new EmailValidation('email', emailValidatorStub)
+      new EmailValidation('email', emailValidatorStub),
+      new UniqueEmailValidation('email', assertAccountExistsByEmailRepositoryStub)
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
