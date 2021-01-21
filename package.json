@@ -7,7 +7,7 @@
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc",
-    "up": "npm run build && docker-compose up -d",
+    "up": "npm run build && docker build . --tag clean-node-api && docker-compose up -d",
     "down": "docker-compose down",
     "dev": "sucrase-node src/main/server.ts",
     "test": "npm run test:verbose -- --silent --noStackTrace",
