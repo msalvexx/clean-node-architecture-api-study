@@ -39,4 +39,10 @@ describe('UniqueEmailValidation', () => {
     const promise = sut.validate({ email: 'any@mail.com' })
     await expect(promise).rejects.toThrowError(new EmailDuplicatedError('any@mail.com'))
   })
+
+  test('Should return nothing if email not exists', async () => {
+    const { sut } = makeSut()
+    const result = await sut.validate({ email: 'any@mail.com' })
+    expect(result).toBeFalsy()
+  })
 })
