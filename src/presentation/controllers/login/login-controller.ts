@@ -9,7 +9,7 @@ export class LoginController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.body)
+      await this.validation.validate(httpRequest.body)
       const accessToken = await this.authentication.auth(httpRequest.body)
       return ok({ accessToken })
     } catch (error) {

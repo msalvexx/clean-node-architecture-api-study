@@ -9,7 +9,7 @@ export class SignUpController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.validation.validate(httpRequest.body)
+    await this.validation.validate(httpRequest.body)
     const { passwordConfirmation, ...dataWithoutPasswordConfirmation } = httpRequest.body
     const { name, ...credentials } = dataWithoutPasswordConfirmation
     const account = await this.addAccount.add(dataWithoutPasswordConfirmation)

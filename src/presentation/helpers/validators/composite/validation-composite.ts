@@ -4,9 +4,9 @@ export class ValidationComposite implements Validation {
   constructor (private readonly validations: Validation[]) {
   }
 
-  validate (input: any): void {
+  async validate (input: any): Promise<void> {
     for (const validation of this.validations) {
-      validation.validate(input)
+      await validation.validate(input)
     }
   }
 }

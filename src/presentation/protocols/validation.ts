@@ -1,3 +1,3 @@
 export interface Validation {
-  validate: (input: any) => void
+  validate: (input: any) => Promise<void>
 }

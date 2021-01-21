@@ -3,9 +3,9 @@ import { Validation } from '../../../protocols/validation'
 
 export class RequiredFieldValidation implements Validation {
   constructor (private readonly fieldName: string) { }
-  validate (input: any): void {
+  async validate (input: any): Promise<void> {
     if (!input[this.fieldName]) {
-      throw new MissingParameterError(this.fieldName)
+      return Promise.reject(new MissingParameterError(this.fieldName))
     }
   }
 }

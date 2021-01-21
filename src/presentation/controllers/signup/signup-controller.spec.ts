@@ -23,7 +23,7 @@ const makeAuthenticationStub = (): Authentication => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): void {
+    async validate (input: any): Promise<void> {
       return null
     }
   }

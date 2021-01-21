@@ -11,7 +11,7 @@ interface SutTypes {
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): void {
+    async validate (input: any): Promise<void> {
       return null
     }
   }

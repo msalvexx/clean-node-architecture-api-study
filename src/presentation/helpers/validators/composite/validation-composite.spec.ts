@@ -1,4 +1,4 @@
-import { InvalidParameterError, MissingParameterError } from '../../../errors'
+import { MissingParameterError } from '../../../errors'
 import { Validation } from '../../../protocols/validation'
 import { ValidationComposite } from './validation-composite'
 
@@ -9,8 +9,8 @@ interface SutTypes {
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
+    async validate (input: any): Promise<void> {
+      return new Promise(resolve => resolve(null))
     }
   }
   return new ValidationStub()
@@ -29,28 +29,16 @@ const makeSut = (): SutTypes => {
 }
 
 describe('ValidationComposite', () => {
-  test('Should return validation error if any validation fails', () => {
+  test('Should return validation error if any validation fails', async () => {
     const { sut, validationStubs } = makeSut()
-    jest.spyOn(validationStubs[0], 'validate').mockImplementationOnce(() => {
-      throw new MissingParameterError('field')
-    })
-    expect(() => sut.validate({ field: 'any_value' })).toThrow(new MissingParameterError('field'))
+    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new Promise((resolve, reject) => reject(new MissingParameterError('field'))))
+    const promise = sut.validate({ field: 'any_value' })
+    await expect(promise).rejects.toThrow(new MissingParameterError('field'))
   })
 
-  test('Should return the first error if more than one validation fails', () => {
-    const { sut, validationStubs } = makeSut()
-    jest.spyOn(validationStubs[0], 'validate').mockImplementationOnce(() => {
-      throw new MissingParameterError('field')
-    })
-    jest.spyOn(validationStubs[1], 'validate').mockImplementationOnce(() => {
-      throw new InvalidParameterError('field')
-    })
-    expect(() => sut.validate({ field: 'any_value' })).toThrow(new MissingParameterError('field'))
-  })
-
-  test('Should not return validation error if validation succeeds', () => {
+  test('Should not return validation error if validation succeeds', async () => {
     const { sut } = makeSut()
-    const error = sut.validate({ field: 'any_value' })
+    const error = await sut.validate({ field: 'any_value' })
     expect(error).toBeFalsy()
   })
 })
