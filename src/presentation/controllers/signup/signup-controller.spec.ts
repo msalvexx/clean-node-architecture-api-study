@@ -1,7 +1,7 @@
 import { ok } from '../../helpers/http/http-helper'
 import { HttpRequest } from '../../protocols'
 import { SignUpController } from './signup-controller'
-import { Account, AddAccount, AddAccountModel, Validation } from './signup-controller.protocols'
+import { AuthenticationModel, Authentication, Account, AddAccount, AddAccountModel, Validation } from './signup-controller.protocols'
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -10,6 +10,15 @@ const makeAddAccount = (): AddAccount => {
     }
   }
   return new AddAccountStub()
+}
+
+const makeAuthenticationStub = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth (credentials: AuthenticationModel): Promise<string> {
+      return new Promise(resolve => resolve('any_token'))
+    }
+  }
+  return new AuthenticationStub()
 }
 
 const makeValidation = (): Validation => {
@@ -41,16 +50,19 @@ interface SutTypes {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount()
   const validationStub = makeValidation()
-  const sut = new SignUpController(addAccountStub, validationStub)
+  const authenticationStub = makeAuthenticationStub()
+  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
   return {
     sut,
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
@@ -82,5 +94,12 @@ describe('SignUp Controller', () => {
     jest.spyOn(sut, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authenticationSpy = jest.spyOn(authenticationStub, 'auth')
+    const { passwordConfirmation, name, ...credentials } = makeFakeRequest().body
+    await sut.handle(makeFakeRequest())
+    expect(authenticationSpy).toHaveBeenCalledWith(credentials)
   })
 })
