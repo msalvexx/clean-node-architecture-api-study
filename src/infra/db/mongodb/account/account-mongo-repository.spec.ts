@@ -76,10 +76,16 @@ describe('Account Mongo Repository', () => {
     expect(account.accessToken).toBe('any_token')
   })
 
-  test('Should return true if email already exists', async () => {
+  test('Should return true if email already exists in collection', async () => {
     const sut = makeSut()
     await accountCollection.insertOne(makeFakeAccount())
     const result = await sut.exists('any_email@email.com')
     expect(result).toBeTruthy()
+  })
+
+  test('Should return false if email not exists in collection', async () => {
+    const sut = makeSut()
+    const result = await sut.exists('any_email@email.com')
+    expect(result).toBeFalsy()
   })
 })
