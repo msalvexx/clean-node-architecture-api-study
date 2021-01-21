@@ -45,4 +45,11 @@ describe('UniqueEmailValidation', () => {
     const result = await sut.validate({ email: 'any@mail.com' })
     expect(result).toBeFalsy()
   })
+
+  test('Should throw if AssertAccountExistsByEmailRepository throws', async () => {
+    const { sut, repo } = makeSut()
+    jest.spyOn(repo, 'exists').mockRejectedValueOnce(new Error())
+    const promise = sut.validate({ email: 'any@mail.com' })
+    await expect(promise).rejects.toThrow()
+  })
 })
