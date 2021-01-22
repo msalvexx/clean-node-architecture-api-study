@@ -1,5 +1,5 @@
-import { Hasher } from '../../../data/protocols/criptography/hasher'
 import bcrypt from 'bcrypt'
+import { Hasher } from '../../../data/protocols/criptography/hasher'
 import { HashComparer } from '../../../data/protocols/criptography/hash-comparer'
 import { InvalidHashError } from '../../../data/errors/invalid-hash-error'
 

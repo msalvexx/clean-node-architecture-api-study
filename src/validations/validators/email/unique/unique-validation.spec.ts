@@ -1,6 +1,6 @@
-import { AssertAccountExistsByEmailRepository } from '../../../../../data/usecases/authentication/db-authentication.protocols'
+import { AssertAccountExistsByEmailRepository } from '../../../../data/usecases/authentication/db-authentication.protocols'
+import { AttributeDuplicatedError } from '../../../../presentation/errors/email-duplicated-error'
 import { UniqueEmailValidation } from './unique-validation'
-import { AttributeDuplicatedError } from '../../../../errors/email-duplicated-error'
 
 interface SutTypes {
   sut: UniqueEmailValidation

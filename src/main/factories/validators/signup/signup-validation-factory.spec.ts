@@ -1,11 +1,11 @@
 import { AssertAccountExistsByEmailRepository } from '../../../../data/usecases/authentication/db-authentication.protocols'
-import { CompareFieldsValidation, ValidationComposite, EmailValidation, UniqueEmailValidation } from '../../../../presentation/helpers/validators'
-import { Validation } from '../../../../presentation/protocols/validation'
-import { EmailValidator } from '../../../../presentation/protocols/email-validator'
+import { CompareFieldsValidation, ValidationComposite, EmailValidation, UniqueEmailValidation } from '../../../../validations/validators'
+import { Validation } from '../../../../presentation/protocols'
+import { EmailValidator } from '../../../../validations/protocols/email-validator'
 import { makeRequiredFieldsValidators } from '../../validators/required-validators'
 import { makeSignUpValidation as sut } from './signup-validation-factory'
 
-jest.mock('../../../../presentation/helpers/validators/composite/validation-composite')
+jest.mock('../../../../validations/validators/composite/validation-composite')
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {

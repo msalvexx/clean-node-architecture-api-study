@@ -1,6 +1,6 @@
-import { AssertAccountExistsByEmailRepository } from '../../../../../data/usecases/authentication/db-authentication.protocols'
-import { AttributeDuplicatedError } from '../../../../errors/email-duplicated-error'
-import { Validation } from '../../../../protocols/validation'
+import { AssertAccountExistsByEmailRepository } from '../../../../data/usecases/authentication/db-authentication.protocols'
+import { AttributeDuplicatedError } from '../../../../presentation/errors/email-duplicated-error'
+import { Validation } from '../../../../presentation/protocols'
 
 export class UniqueEmailValidation implements Validation {
   constructor (
