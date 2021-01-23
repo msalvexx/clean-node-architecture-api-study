@@ -17,7 +17,7 @@ describe('SignUp Validation Factory', () => {
       ...makeRequiredFieldsValidators(['name', 'email', 'password', 'passwordConfirmation']),
       new CompareFieldsValidation('password', 'passwordConfirmation'),
       new EmailValidation('email', emailValidator),
-      new UniqueFieldValidation('email', uniqueValidatorAdapter)
+      new UniqueFieldValidation(['email'], uniqueValidatorAdapter)
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

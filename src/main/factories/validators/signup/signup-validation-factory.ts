@@ -12,7 +12,7 @@ export const makeSignUpValidation = (): ValidationComposite => {
     ...makeRequiredFieldsValidators(['name', 'email', 'password', 'passwordConfirmation']),
     new CompareFieldsValidation('password', 'passwordConfirmation'),
     new EmailValidation('email', emailValidator),
-    new UniqueFieldValidation('email', uniqueValidatorAdapter)
+    new UniqueFieldValidation(['email'], uniqueValidatorAdapter)
   ]
   return new ValidationComposite(validations)
 }
