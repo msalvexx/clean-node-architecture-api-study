@@ -4,14 +4,25 @@ import { UniqueValidator } from '../../protocols'
 
 export class UniqueFieldValidation implements Validation {
   constructor (
-    private readonly fieldName: string,
+    private readonly fieldNames: string[],
     private readonly uniqueValidator: UniqueValidator
   ) {}
 
   async validate (input: any): Promise<void> {
-    const inputIsUnique = await this.uniqueValidator.isUnique({ [this.fieldName]: input[this.fieldName] })
+    const inputsToValidate = this.getInputs(input)
+    const inputIsUnique = await this.uniqueValidator.isUnique(inputsToValidate)
     if (!inputIsUnique) {
-      return Promise.reject(new AttributeDuplicatedError(this.fieldName))
+      return Promise.reject(new AttributeDuplicatedError(Object.keys(inputsToValidate)))
     }
+  }
+
+  getInputs (input: any): any {
+    let inputsToValidate = { }
+    for (const fieldName of this.fieldNames) {
+      if (Object.keys(input).includes(fieldName)) {
+        inputsToValidate = { ...inputsToValidate, [fieldName]: input[fieldName] }
+      }
+    }
+    return inputsToValidate
   }
 }
