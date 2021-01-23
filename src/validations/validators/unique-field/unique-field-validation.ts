@@ -1,6 +1,6 @@
-import { AttributeDuplicatedError } from '../../../presentation/errors/email-duplicated-error'
+import { AttributeDuplicatedError } from '../../../presentation/errors/attribute-duplicated-error'
 import { Validation } from '../../../presentation/protocols'
-import { UniqueValidator } from '../../protocols/unique-validator'
+import { UniqueValidator } from '../../protocols'
 
 export class UniqueFieldValidation implements Validation {
   constructor (

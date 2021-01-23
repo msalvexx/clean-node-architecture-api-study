@@ -1,5 +1,5 @@
-import { AttributeDuplicatedError } from '../../../presentation/errors/email-duplicated-error'
-import { UniqueValidator } from '../../protocols/unique-validator'
+import { AttributeDuplicatedError } from '../../../presentation/errors'
+import { UniqueValidator } from '../../protocols'
 import { UniqueFieldValidation } from './unique-field-validation'
 
 interface SutTypes {
