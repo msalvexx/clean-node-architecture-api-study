@@ -1,4 +1,4 @@
-import { HttpRequest, Validation } from './add-survey-controller.protocols'
+import { HttpRequest, Validation, MissingParameterError, ValidationError } from './add-survey-controller.protocols'
 import { AddSurveyController } from './add-survey-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -43,5 +43,13 @@ describe('Add Survey', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should throw ValidationError if validation throws ValidationError', async () => {
+    const { sut, validationStub } = makeSut()
+    const httpRequest = makeFakeRequest()
+    jest.spyOn(validationStub, 'validate').mockRejectedValueOnce(new MissingParameterError('any_param'))
+    const promise = sut.handle(httpRequest)
+    await expect(promise).rejects.toThrowError(ValidationError)
   })
 })
