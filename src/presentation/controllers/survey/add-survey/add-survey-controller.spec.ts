@@ -80,4 +80,12 @@ describe('Add Survey', () => {
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  test('Should throw if validation throws', async () => {
+    const { sut, addSurveyStub } = makeSut()
+    const httpRequest = makeFakeRequest()
+    jest.spyOn(addSurveyStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.handle(httpRequest)
+    await expect(promise).rejects.toThrowError(Error)
+  })
 })
