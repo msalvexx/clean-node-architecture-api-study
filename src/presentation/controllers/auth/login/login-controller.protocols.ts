@@ -1,0 +1,5 @@
+export * from '../../../protocols'
+export * from '../../../protocols/validation'
+export * from '../../../errors/validation-error'
+export * from '../../../../domain/usecases/authentication'
+export * from '../../../../domain/errors/invalid-credentials-error'
