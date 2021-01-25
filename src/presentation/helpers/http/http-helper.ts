@@ -24,5 +24,5 @@ export const unauthorized = (): HttpResponse => ({
 
 export const noContent = (): HttpResponse => ({
   statusCode: 204,
-  body: {}
+  body: null
 })
