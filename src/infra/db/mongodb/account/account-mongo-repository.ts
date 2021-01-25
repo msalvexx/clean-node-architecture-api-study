@@ -11,7 +11,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne({ accessToken: token, role })
     this.throwNotFoundWhenNull(account)
-    return Promise.resolve(null)
+    return MongoHelper.map(account)
   }
 
   async exists (data: any): Promise<boolean> {
