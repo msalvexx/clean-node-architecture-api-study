@@ -15,8 +15,8 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
       return account
     } catch (e) {
       this.throwAccessDeniedOnErrors(e);
+      throw e
     }
-    return null
   }
 
   private throwAccessDeniedOnErrors (error: any): void {
