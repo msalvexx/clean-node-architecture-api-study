@@ -10,14 +10,14 @@
     "up": "npm run build && docker build . --tag clean-node-api && docker-compose up -d",
     "down": "docker-compose down",
     "dev": "sucrase-node src/main/server.ts",
-    "test": "npm run test:verbose -- --silent --noStackTrace",
+    "test": "npm run test:verbose -- --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js --runInBand",
-    "test:staged": "npm test -- --findRelatedTests --maxWorkers=4",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "test:verbose:unit": "npm run test:verbose -- --watch -c jest-unit-config.js",
-    "test:verbose:integration": "npm run test:verbose -- --watch -c jest-integration-config.js --runInBand"
+    "test:verbose:integration": "npm run test:verbose -- --watch -c jest-integration-config.js"
   },
   "keywords": [],
   "author": "",
