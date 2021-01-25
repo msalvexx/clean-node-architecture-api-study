@@ -96,4 +96,12 @@ describe('Account Mongo Repository', () => {
       expect(result).toBeFalsy()
     })
   })
+
+  describe('loadByToken()', () => {
+    test('Should throw NotFoundModelError on loadByToken returns null', async () => {
+      const sut = makeSut()
+      const promise = sut.loadByToken('any_email@email.com')
+      await expect(promise).rejects.toThrow(new NotFoundModelError('account'))
+    })
+  })
 })
