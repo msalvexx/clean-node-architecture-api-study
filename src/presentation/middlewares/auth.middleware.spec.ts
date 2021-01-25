@@ -48,6 +48,13 @@ describe('Auth Middleware', () => {
     expect(httpResponse).toStrictEqual(forbidden(new AccessDeniedError()))
   })
 
+  test('Should return 403 if LoadAccountByToken throws NotFoundModel', async () => {
+    const { sut, loadAccountByTokenStub } = makeSut()
+    jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockRejectedValueOnce(new AccessDeniedError())
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toStrictEqual(forbidden(new AccessDeniedError()))
+  })
+
   test('Should call LoadAccountByToken with correct access token', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'loadByToken')
