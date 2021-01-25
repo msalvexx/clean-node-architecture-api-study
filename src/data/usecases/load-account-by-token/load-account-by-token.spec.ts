@@ -68,7 +68,7 @@ describe('DbLoadAccountByToken Usecase', () => {
     expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
   })
 
-  test('Should throw AccessDeniedError if LoadAccountByToken throws NotFoundModelError', async () => {
+  test('Should throw AccessDeniedError if LoadAccountByTokenRepository throws NotFoundModelError', async () => {
     const { sut, repoStub } = makeSut()
     jest.spyOn(repoStub, 'loadByToken').mockRejectedValueOnce(new NotFoundModelError('account'))
     const promise = sut.load('any_token', 'any_role')
@@ -84,6 +84,13 @@ describe('DbLoadAccountByToken Usecase', () => {
   test('Should throw if Decrypter decrypt throws', async () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockRejectedValueOnce(new Error())
+    const promise = sut.load('any_token', 'any_role')
+    await expect(promise).rejects.toThrow(new Error())
+  })
+
+  test('Should throw if LoadAccountByTokenRepository loadByToken throws', async () => {
+    const { sut, repoStub } = makeSut()
+    jest.spyOn(repoStub, 'loadByToken').mockRejectedValueOnce(new Error())
     const promise = sut.load('any_token', 'any_role')
     await expect(promise).rejects.toThrow(new Error())
   })
