@@ -3,8 +3,8 @@ import { AddSurvey, AddSurveyModel, AddSurveyRepository } from './db-add-survey.
 export class DbAddSurvey implements AddSurvey {
   constructor (private readonly repository: AddSurveyRepository) { }
   
-  async add (surveyModel: AddSurveyModel): Promise<void> {
-    await this.repository.add(surveyModel)
+  async add (data: AddSurveyModel): Promise<void> {
+    await this.repository.add(data)
     return Promise.resolve(null)
   }
 }
