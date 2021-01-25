@@ -2,6 +2,7 @@ import {
   Decrypter, AccessDeniedError, Account, 
   LoadAccountByTokenRepository, InvalidTokenError } from './load-account-by-token.protocols'
 import { DbLoadAccountByToken } from './load-account-by-token'
+import { NotFoundModelError } from '../../errors';
 
 interface SutTypes {
   sut: DbLoadAccountByToken
@@ -65,5 +66,12 @@ describe('DbLoadAccountByToken Usecase', () => {
     const loadByTokenSpy = jest.spyOn(repoStub, 'loadByToken')
     await sut.load('any_token', 'any_role')
     expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
+  })
+
+  test('Should throw AccessDeniedError if LoadAccountByToken throws NotFoundModelError', async () => {
+    const { sut, repoStub } = makeSut()
+    jest.spyOn(repoStub, 'loadByToken').mockRejectedValueOnce(new NotFoundModelError('account'))
+    const promise = sut.load('any_token', 'any_role')
+    await expect(promise).rejects.toThrow(AccessDeniedError)
   })
 })
