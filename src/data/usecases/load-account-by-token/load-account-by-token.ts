@@ -1,15 +1,16 @@
-import { AccessDeniedError } from "../../../domain/errors/access-denied-error";
-import { InvalidCredentialsError } from "../../../domain/errors/invalid-credentials-error";
-import { Account } from "../../../domain/models/account";
-import { LoadAccountByToken } from "../../../domain/usecases/load-account-by-token";
-import { Decrypter } from "../../protocols/criptography/decrypter";
+import { AccessDeniedError, Account, Decrypter, LoadAccountByTokenRepository, LoadAccountByToken } from './load-account-by-token.protocols'
+import { InvalidCredentialsError } from '../../../domain/errors/invalid-credentials-error'
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
-  constructor (private readonly decrypter: Decrypter) { }
+  constructor (
+    private readonly decrypter: Decrypter,
+    private readonly repo: LoadAccountByTokenRepository
+  ) { }
 
   async load (accessToken: string, role?: string): Promise<Account> {
     try {
       await this.decrypter.decrypt(accessToken)
+      await this.repo.loadByToken(accessToken, role)
     } catch (e) {
       if (e instanceof InvalidCredentialsError) {
         throw new AccessDeniedError()
