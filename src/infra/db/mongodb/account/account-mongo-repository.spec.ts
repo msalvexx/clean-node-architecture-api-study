@@ -12,7 +12,8 @@ const makeSut = (): AccountMongoRepository => {
 const makeFakeAccount = (): any => ({
   name: 'any_name',
   email: 'any_email@email.com',
-  password: 'any_password'
+  password: 'any_password',
+  accessToken: 'any_token'
 })
 
 describe('Account Mongo Repository', () => {
@@ -77,7 +78,8 @@ describe('Account Mongo Repository', () => {
       expect(accountWithoutId).toEqual({
         name: 'any_name',
         email: 'any_email@email.com',
-        password: 'any_password'
+        password: 'any_password',
+        accessToken: 'any_token'
       })
     })
   })
@@ -100,8 +102,23 @@ describe('Account Mongo Repository', () => {
   describe('loadByToken()', () => {
     test('Should throw NotFoundModelError on loadByToken returns null', async () => {
       const sut = makeSut()
-      const promise = sut.loadByToken('any_email@email.com')
+      const promise = sut.loadByToken('any_token')
       await expect(promise).rejects.toThrow(new NotFoundModelError('account'))
+    })
+
+    test('Should return an account on loadByToken without role', async () => {
+      const sut = makeSut()
+      await accountCollection.insertOne(makeFakeAccount())
+      const account = await sut.loadByToken('any_token')
+      const { id, ...accountWithoutId } = account
+      expect(account).toBeTruthy()
+      expect(id).toBeTruthy()
+      expect(accountWithoutId).toEqual({
+        name: 'any_name',
+        email: 'any_email@email.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      })
     })
   })
 })
