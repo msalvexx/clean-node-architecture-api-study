@@ -1,11 +1,19 @@
 import { AddAccountRepository } from '../../../../data/protocols/db/account/add-account-repository'
+import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/account/load-account-by-token-repository'
 import { ExistsRegisterInRepository } from '../../../../data/protocols/db/exists-register-in-repository'
 import { LoadAccountByEmailRepository, NotFoundModelError, UpdateAccessTokenModel, UpdateAccessTokenRepository } from '../../../../data/usecases/authentication/db-authentication.protocols'
 import { Account } from '../../../../domain/models/account'
 import { AddAccountModel } from '../../../../domain/usecases/add-account'
 import { MongoHelper } from '../helpers/mongo.helper'
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ExistsRegisterInRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ExistsRegisterInRepository, LoadAccountByTokenRepository {
+  async loadByToken (token: string, role?: string): Promise<Account> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    const account = await accountCollection.findOne({ accessToken: token })
+    this.throwNotFoundWhenNull(account)
+    return Promise.resolve(null)
+  }
+
   async exists (data: any): Promise<boolean> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne(data)
