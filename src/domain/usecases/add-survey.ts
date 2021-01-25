@@ -4,10 +4,10 @@ export interface AddSurveyModel {
 }
 
 export interface SurveyAnswers {
-  image: string
+  image?: string
   answer: string
 }
 
 export interface AddSurvey {
-  add: (SurveyModel: AddSurveyModel) => Promise<void>
+  add: (surveyModel: AddSurveyModel) => Promise<void>
 }
