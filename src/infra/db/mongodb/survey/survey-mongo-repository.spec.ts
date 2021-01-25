@@ -36,7 +36,7 @@ describe('SurveyMongoRepository', () => {
     await surveyCollection.deleteMany({})
   })
 
-  test('Should add a survey on success ', async () => {
+  test('Should add a survey on success', async () => {
     const sut = makeSut()
     await sut.add(makeFakeSurveyData())
     const survey = await surveyCollection.findOne({ question: 'any_question' })
