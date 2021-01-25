@@ -1,6 +1,6 @@
 import { 
   AccessDeniedError, Account, Decrypter, LoadAccountByTokenRepository, 
-  LoadAccountByToken, InvalidTokenError } from './load-account-by-token.protocols'
+  LoadAccountByToken, InvalidTokenError, NotFoundModelError } from './load-account-by-token.protocols'
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor (
@@ -19,7 +19,7 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
   }
 
   private throwAccessDeniedOnErrors (error: any): void {
-    for (const errorThatThrows of [InvalidTokenError]) {
+    for (const errorThatThrows of [NotFoundModelError, InvalidTokenError]) {
       if (error instanceof errorThatThrows) {
         throw new AccessDeniedError(error.stack)
       }
