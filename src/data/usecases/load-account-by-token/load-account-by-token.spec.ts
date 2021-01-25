@@ -1,6 +1,7 @@
-import { Decrypter, AccessDeniedError, Account, LoadAccountByTokenRepository } from './load-account-by-token.protocols'
+import { 
+  Decrypter, AccessDeniedError, Account, 
+  LoadAccountByTokenRepository, InvalidTokenError } from './load-account-by-token.protocols'
 import { DbLoadAccountByToken } from './load-account-by-token'
-import { InvalidCredentialsError } from '../../../domain/errors/invalid-credentials-error'
 
 interface SutTypes {
   sut: DbLoadAccountByToken
@@ -54,7 +55,7 @@ describe('DbLoadAccountByToken Usecase', () => {
 
   test('Should throw AccessDeniedError if decrypt fails', async () => {
     const { sut, decrypterStub } = makeSut()
-    jest.spyOn(decrypterStub, 'decrypt').mockRejectedValueOnce(new InvalidCredentialsError())
+    jest.spyOn(decrypterStub, 'decrypt').mockRejectedValueOnce(new InvalidTokenError('any_stack'))
     const promise = sut.load('any_token', 'any_role')
     await expect(promise).rejects.toThrow(AccessDeniedError)
   })

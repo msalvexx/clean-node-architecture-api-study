@@ -1,5 +1,6 @@
-import { AccessDeniedError, Account, Decrypter, LoadAccountByTokenRepository, LoadAccountByToken } from './load-account-by-token.protocols'
-import { InvalidCredentialsError } from '../../../domain/errors/invalid-credentials-error'
+import { 
+  AccessDeniedError, Account, Decrypter, LoadAccountByTokenRepository, 
+  LoadAccountByToken, InvalidTokenError } from './load-account-by-token.protocols'
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor (
@@ -12,10 +13,16 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
       await this.decrypter.decrypt(accessToken)
       await this.repo.loadByToken(accessToken, role)
     } catch (e) {
-      if (e instanceof InvalidCredentialsError) {
-        throw new AccessDeniedError()
-      }
+      this.throwAccessDeniedOnErrors(e);
     }
     return null
+  }
+
+  private throwAccessDeniedOnErrors (error: any): void {
+    for (const errorThatThrows of [InvalidTokenError]) {
+      if (error instanceof errorThatThrows) {
+        throw new AccessDeniedError(error.stack)
+      }
+    }
   }
 }
