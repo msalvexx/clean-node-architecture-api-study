@@ -9,7 +9,10 @@ import { MongoHelper } from '../helpers/mongo.helper'
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ExistsRegisterInRepository, LoadAccountByTokenRepository {
   async loadByToken (token: string, role?: string): Promise<Account> {
     const accountCollection = await MongoHelper.getCollection('accounts')
-    const account = await accountCollection.findOne({ accessToken: token, role })
+    const account = await accountCollection.findOne({
+      accessToken: token,
+      $or: [{ role }, { role: 'admin' }]
+    })
     this.throwNotFoundWhenNull(account)
     return MongoHelper.map(account)
   }
