@@ -64,4 +64,11 @@ describe('LoadSurveysController', () => {
     const result = await sut.handle({})
     expect(result).toStrictEqual(ok(makeFakeSurveys()))
   })
+
+  test('Should throw if LoadSurveys.load usecase throws', async () => {
+    const { sut, loadSurveyStub } = makeSut()
+    jest.spyOn(loadSurveyStub, 'load').mockRejectedValueOnce(new Error())
+    const promise = sut.handle({})
+    await expect(promise).rejects.toThrowError()
+  })
 })
