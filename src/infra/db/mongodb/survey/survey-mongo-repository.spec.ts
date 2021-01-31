@@ -2,6 +2,7 @@ import { Collection } from 'mongodb'
 import { AddSurveyModel } from '../../../../domain/usecases/add-survey'
 import { MongoHelper } from '../helpers/mongo.helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
+import MockDate from 'mockdate'
 
 let surveyCollection: Collection
 
@@ -19,15 +20,18 @@ const makeFakeSurveyData = (): AddSurveyModel => ({
     {
       answer: 'other_answer'
     }
-  ]
+  ],
+  date: new Date()
 })
 
 describe('SurveyMongoRepository', () => {
   beforeAll(async () => {
+    MockDate.set(new Date())
     await MongoHelper.connect(process.env.MONGO_URL)
   })
 
   afterAll(async () => {
+    MockDate.reset()
     await MongoHelper.disconnect()
   })
 

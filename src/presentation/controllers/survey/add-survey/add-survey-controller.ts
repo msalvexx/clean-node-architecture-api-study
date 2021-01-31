@@ -9,7 +9,12 @@ export class AddSurveyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     await this.validation.validate(httpRequest.body)
-    await this.addSurvey.add(httpRequest.body)
+    const { question, answers } = httpRequest.body
+    await this.addSurvey.add({
+      question,
+      answers,
+      date: new Date()
+    })
     return noContent()
   }
 }

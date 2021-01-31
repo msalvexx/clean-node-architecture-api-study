@@ -5,6 +5,5 @@ export class DbAddSurvey implements AddSurvey {
   
   async add (data: AddSurveyModel): Promise<void> {
     await this.repository.add(data)
-    return Promise.resolve(null)
   }
 }
