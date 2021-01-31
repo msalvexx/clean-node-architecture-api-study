@@ -1,6 +1,6 @@
 import { LoadSurveys, Survey } from './load-surveys-controller.protocols'
 import { LoadSurveysController } from './load-surveys-controller'
-import { ok } from '../../../helpers/http/http-helper'
+import { noContent, ok } from '../../../helpers/http/http-helper'
 import MockDate from 'mockdate'
 
 interface SutTypes {
@@ -63,6 +63,13 @@ describe('LoadSurveysController', () => {
     const { sut } = makeSut()
     const result = await sut.handle({})
     expect(result).toStrictEqual(ok(makeFakeSurveys()))
+  })
+
+  test('Should return 204 when no survey is founded', async () => {
+    const { sut, loadSurveyStub } = makeSut()
+    jest.spyOn(loadSurveyStub, 'load').mockResolvedValueOnce([])
+    const result = await sut.handle({})
+    expect(result).toStrictEqual(noContent())
   })
 
   test('Should throw if LoadSurveys.load usecase throws', async () => {
