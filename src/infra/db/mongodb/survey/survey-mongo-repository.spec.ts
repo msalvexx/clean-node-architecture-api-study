@@ -40,10 +40,36 @@ describe('SurveyMongoRepository', () => {
     await surveyCollection.deleteMany({})
   })
 
-  test('Should add a survey on success', async () => {
-    const sut = makeSut()
-    await sut.add(makeFakeSurveyData())
-    const survey = await surveyCollection.findOne({ question: 'any_question' })
-    expect(survey).toBeTruthy()
+  describe('AddSurveyRepository', () => {
+    test('Should add a survey on success', async () => {
+      const sut = makeSut()
+      await sut.add(makeFakeSurveyData())
+      const survey = await surveyCollection.findOne({ question: 'any_question' })
+      expect(survey).toBeTruthy()
+    })
+  })
+
+  describe('LoadSurveysRepository', () => {
+    test('Should load surveys on success', async () => {
+      await surveyCollection.insertMany([{
+        question: '1st_question',
+        answers: [{
+          image: 'any_image',
+          answer: 'any_name'
+        }],
+        date: new Date()
+      }, {
+        question: '2st_question',
+        answers: [{
+          answer: 'any_name'
+        }],
+        date: new Date()
+      }])
+      const sut = makeSut()
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(2)
+      expect(surveys[0].question).toBe('1st_question')
+      expect(surveys[1].question).toBe('2st_question')
+    })
   })
 })
