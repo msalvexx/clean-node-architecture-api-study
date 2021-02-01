@@ -8,6 +8,19 @@ import env from '../config/env'
 let surveyCollection: Collection
 let accountCollection: Collection
 
+const makeFakeSurvey = (): any => ({
+  question: 'Question',
+  answers: [
+    {
+      answer: 'Answer 1',
+      image: 'http://image-name.com'
+    },
+    {
+      answer: 'Answer 2'
+    }
+  ]
+})
+
 const makeFakeAccount = (): any => ({
   name: 'any_name',
   email: 'any_email@email.com',
@@ -51,18 +64,7 @@ describe('Survey Routes', () => {
     test('Should return 403 on add survey without access token', async () => {
       await request(app)
         .post('/api/surveys')
-        .send({
-          question: 'Question',
-          answers: [
-            {
-              answer: 'Answer 1',
-              image: 'http://image-name.com'
-            },
-            {
-              answer: 'Answer 2'
-            }
-          ]
-        })
+        .send(makeFakeSurvey())
         .expect(403)
     })
 
@@ -71,18 +73,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send({
-          question: 'Question',
-          answers: [
-            {
-              answer: 'Answer 1',
-              image: 'http://image-name.com'
-            },
-            {
-              answer: 'Answer 2'
-            }
-          ]
-        })
+        .send(makeFakeSurvey())
         .expect(204)
     })
   })
@@ -96,18 +87,7 @@ describe('Survey Routes', () => {
 
     test('Should return 200 on load surveys with valid access token', async () => {
       const accessToken = await makeAccessToken()
-      await surveyCollection.insertOne({
-        question: 'Question',
-        answers: [
-          {
-            answer: 'Answer 1',
-            image: 'http://image-name.com'
-          },
-          {
-            answer: 'Answer 2'
-          }
-        ]
-      })
+      await surveyCollection.insertOne(makeFakeSurvey())
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
