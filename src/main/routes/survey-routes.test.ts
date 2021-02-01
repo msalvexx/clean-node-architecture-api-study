@@ -14,6 +14,23 @@ const makeFakeAccount = (): any => ({
   password: 'any_password'
 })
 
+const makeAccessToken = async (): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    ...makeFakeAccount(),
+    role: 'admin'
+  })
+  const id = res.ops.pop()._id
+  const accessToken = sign({ id }, env.jwtSecret)
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+  return accessToken
+}
+
 describe('Survey Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -50,19 +67,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on add survey with valid access token', async () => {
-      const res = await accountCollection.insertOne({
-        ...makeFakeAccount(),
-        role: 'admin'
-      })
-      const id = res.ops.pop()._id
-      const accessToken = sign({ id }, env.jwtSecret)
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -90,19 +95,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 200 on load surveys with valid access token', async () => {
-      const res = await accountCollection.insertOne({
-        ...makeFakeAccount(),
-        role: 'admin'
-      })
-      const id = res.ops.pop()._id
-      const accessToken = sign({ id }, env.jwtSecret)
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
       await surveyCollection.insertOne({
         question: 'Question',
         answers: [
