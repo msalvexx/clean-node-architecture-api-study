@@ -8,6 +8,8 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/clean-node-api
   api:
     container_name: api-container
     build: .
