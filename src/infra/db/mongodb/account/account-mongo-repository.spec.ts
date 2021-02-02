@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb'
-import { NotFoundModelError } from '../../../../data/errors/not-found-model-error'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { NotFoundModelError } from '@/data/errors/not-found-model-error'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { AccountMongoRepository } from './account-mongo-repository'
 
 let accountCollection: Collection

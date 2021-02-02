@@ -1,5 +1,5 @@
-import { ExistsRegisterInRepository } from '../../../data/protocols/db/exists-register-in-repository'
-import { UniqueValidator } from '../../../validations/protocols/unique-validator'
+import { ExistsRegisterInRepository } from '@/data/protocols/db/exists-register-in-repository'
+import { UniqueValidator } from '@/validations/protocols/unique-validator'
 
 export class UniqueValidatorAdapter implements UniqueValidator {
   constructor (private readonly repo: ExistsRegisterInRepository) { }

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { InvalidHashError } from '../../../data/errors/invalid-hash-error'
+import { InvalidHashError } from '@/data/errors/invalid-hash-error'
 import { BCryptAdapter } from './bcrypt-adapter'
 
 jest.mock('bcrypt', () => ({

@@ -1,6 +1,6 @@
-import { InvalidCredentialsError } from '../../../domain/errors/invalid-credentials-error'
-import { ServerError } from '../../errors'
-import { HttpResponse } from '../../protocols'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
+import { ServerError } from '@/presentation/errors'
+import { HttpResponse } from '@/presentation/protocols'
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,

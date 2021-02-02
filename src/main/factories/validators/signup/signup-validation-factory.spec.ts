@@ -1,11 +1,11 @@
-import { CompareFieldsValidation, ValidationComposite, EmailValidation, UniqueFieldValidation } from '../../../../validations/validators'
-import { Validation } from '../../../../presentation/protocols'
-import { makeRequiredFieldsValidators } from '../../validators/required-validators'
+import { CompareFieldsValidation, ValidationComposite, EmailValidation, UniqueFieldValidation } from '@/validations/validators'
+import { Validation } from '@/presentation/protocols'
+import { makeRequiredFieldsValidators } from '@/main/factories/validators/required-validators'
 import { makeSignUpValidation as sut } from './signup-validation-factory'
-import { AccountMongoRepository } from '../../../../infra/db/mongodb/account/account-mongo-repository'
-import { EmailValidatorAdapter, UniqueValidatorAdapter } from '../../../../infra/validators'
+import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo-repository'
+import { EmailValidatorAdapter, UniqueValidatorAdapter } from '@/infra/validators'
 
-jest.mock('../../../../validations/validators/composite/validation-composite')
+jest.mock('@/validations/validators/composite/validation-composite')
 
 describe('SignUp Validation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {

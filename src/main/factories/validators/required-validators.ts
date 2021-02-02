@@ -1,5 +1,5 @@
-import { RequiredFieldValidation } from '../../../validations/validators'
-import { Validation } from '../../../presentation/protocols'
+import { RequiredFieldValidation } from '@/validations/validators'
+import { Validation } from '@/presentation/protocols'
 
 export const makeRequiredFieldsValidators = (requiredFields: string[]): Validation[] => {
   const validations: Validation[] = []

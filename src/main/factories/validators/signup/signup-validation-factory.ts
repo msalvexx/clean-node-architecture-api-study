@@ -1,8 +1,8 @@
-import { AccountMongoRepository } from '../../../../infra/db/mongodb/account/account-mongo-repository'
-import { CompareFieldsValidation, EmailValidation, ValidationComposite, UniqueFieldValidation } from '../../../../validations/validators'
-import { Validation } from '../../../../presentation/protocols'
-import { EmailValidatorAdapter, UniqueValidatorAdapter } from '../../../../infra/validators'
-import { makeRequiredFieldsValidators } from '../../validators/required-validators'
+import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo-repository'
+import { CompareFieldsValidation, EmailValidation, ValidationComposite, UniqueFieldValidation } from '@/validations/validators'
+import { Validation } from '@/presentation/protocols'
+import { EmailValidatorAdapter, UniqueValidatorAdapter } from '@/infra/validators'
+import { makeRequiredFieldsValidators } from '@/main/factories/validators/required-validators'
 
 export const makeSignUpValidation = (): ValidationComposite => {
   const emailValidator = new EmailValidatorAdapter()

@@ -1,8 +1,8 @@
-import { badRequest, ok, serverError } from '../../../presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
-import { Account } from '../../../domain/models/account'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { Account } from '@/domain/models/account'
 import { DefaultErrorControllerDecorator } from './error'
-import { ValidationError } from '../../../presentation/errors/validation-error'
+import { ValidationError } from '@/presentation/errors/validation-error'
 
 interface SutTypes {
   sut: DefaultErrorControllerDecorator

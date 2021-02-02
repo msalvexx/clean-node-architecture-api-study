@@ -1,4 +1,4 @@
-import { noContent } from '../../../helpers/http/http-helper'
+import { noContent } from '@/presentation/helpers/http/http-helper'
 import { AddSurvey, Controller, Validation, HttpRequest, HttpResponse } from './add-survey-controller.protocols'
 
 export class AddSurveyController implements Controller {

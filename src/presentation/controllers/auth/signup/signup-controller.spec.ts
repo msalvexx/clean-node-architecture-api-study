@@ -1,5 +1,5 @@
-import { ok } from '../../../helpers/http/http-helper'
-import { HttpRequest } from '../../../protocols'
+import { ok } from '@/presentation/helpers/http/http-helper'
+import { HttpRequest } from '@/presentation/protocols'
 import { SignUpController } from './signup-controller'
 import { AuthenticationModel, Authentication, Account, AddAccount, AddAccountModel, Validation } from './signup-controller.protocols'
 

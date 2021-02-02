@@ -1,6 +1,6 @@
-import { ValidationError } from '../../../presentation/errors/validation-error'
-import { badRequest, serverError } from '../../../presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
+import { ValidationError } from '@/presentation/errors/validation-error'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 
 export class DefaultErrorControllerDecorator implements Controller {
   constructor (private readonly controller: Controller) { }

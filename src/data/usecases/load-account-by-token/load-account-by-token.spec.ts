@@ -2,7 +2,7 @@ import {
   Decrypter, AccessDeniedError, Account, 
   LoadAccountByTokenRepository, InvalidTokenError } from './load-account-by-token.protocols'
 import { DbLoadAccountByToken } from './load-account-by-token'
-import { NotFoundModelError } from '../../errors';
+import { NotFoundModelError } from '@/data/errors';
 
 interface SutTypes {
   sut: DbLoadAccountByToken

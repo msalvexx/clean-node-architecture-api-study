@@ -1,10 +1,10 @@
-import { AddAccountRepository } from '../../../../data/protocols/db/account/add-account-repository'
-import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/account/load-account-by-token-repository'
-import { ExistsRegisterInRepository } from '../../../../data/protocols/db/exists-register-in-repository'
-import { LoadAccountByEmailRepository, NotFoundModelError, UpdateAccessTokenModel, UpdateAccessTokenRepository } from '../../../../data/usecases/authentication/db-authentication.protocols'
-import { Account } from '../../../../domain/models/account'
-import { AddAccountModel } from '../../../../domain/usecases/add-account'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
+import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
+import { ExistsRegisterInRepository } from '@/data/protocols/db/exists-register-in-repository'
+import { LoadAccountByEmailRepository, NotFoundModelError, UpdateAccessTokenModel, UpdateAccessTokenRepository } from '@/data/usecases/authentication/db-authentication.protocols'
+import { Account } from '@/domain/models/account'
+import { AddAccountModel } from '@/domain/usecases/add-account'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ExistsRegisterInRepository, LoadAccountByTokenRepository {
   async loadByToken (token: string, role?: string): Promise<Account> {
