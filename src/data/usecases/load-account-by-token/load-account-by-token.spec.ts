@@ -4,7 +4,7 @@ import {
 import { DbLoadAccountByToken } from './load-account-by-token'
 import { NotFoundModelError } from '@/data/errors';
 
-interface SutTypes {
+type SutTypes = {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
   repoStub: LoadAccountByTokenRepository

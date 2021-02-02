@@ -1,4 +1,4 @@
-export interface UpdateAccessTokenModel {
+export type UpdateAccessTokenModel = {
   id: string
   token: string
 }

@@ -1,14 +1,14 @@
-export interface AddSurveyModel {
+export type AddSurveyModel = {
   question: string
   answers: SurveyAnswers[]
   date: Date
 }
 
-export interface SurveyAnswers {
+export type SurveyAnswers = {
   image?: string
   answer: string
 }
 
-export interface AddSurvey {
+export type AddSurvey = {
   add: (data: AddSurveyModel) => Promise<void>
 }

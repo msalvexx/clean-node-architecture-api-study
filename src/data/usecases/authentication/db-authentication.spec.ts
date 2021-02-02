@@ -4,7 +4,7 @@ import {
   Encrypter, LoadAccountByEmailRepository, UpdateAccessTokenModel, UpdateAccessTokenRepository
 } from './db-authentication.protocols'
 
-interface SutTypes {
+type SutTypes = {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashComparerStub: HashComparer

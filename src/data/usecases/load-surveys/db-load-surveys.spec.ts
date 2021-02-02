@@ -2,7 +2,7 @@ import { DbLoadSurveys } from './db-load-surveys'
 import { Survey, LoadSurveysRepository } from './db-load-surveys.protocols'
 import MockDate from 'mockdate'
 
-export interface SutTypes {
+export type SutTypes = {
   sut: DbLoadSurveys
   loadSurveysRepositoryStub: LoadSurveysRepository
 }

@@ -4,7 +4,7 @@ import { Account } from '@/domain/models/account'
 import { DefaultErrorControllerDecorator } from './error'
 import { ValidationError } from '@/presentation/errors/validation-error'
 
-interface SutTypes {
+type SutTypes = {
   sut: DefaultErrorControllerDecorator
   controllerStub: Controller
 }

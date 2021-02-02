@@ -1,7 +1,7 @@
 import { ExistsRegisterInRepository } from '@/data/protocols/db/exists-register-in-repository'
 import { UniqueValidatorAdapter } from './unique-validator-adapter'
 
-interface SutTypes {
+type SutTypes = {
   sut: UniqueValidatorAdapter
   repo: ExistsRegisterInRepository
 }

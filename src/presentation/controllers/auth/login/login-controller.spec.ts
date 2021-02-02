@@ -3,7 +3,7 @@ import { HttpRequest, InvalidCredentialsError, Authentication, AuthenticationMod
 import { LoginController } from './login-controller'
 import { ValidationError } from '@/presentation/controllers/auth/login/login-controller.protocols'
 
-interface SutTypes {
+type SutTypes = {
   sut: LoginController
   validationStub: Validation
   authenticationStub: Authentication

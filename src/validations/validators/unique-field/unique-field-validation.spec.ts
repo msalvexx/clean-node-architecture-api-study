@@ -2,7 +2,7 @@ import { AttributeDuplicatedError } from '@/presentation/errors'
 import { UniqueValidator } from '@/validations/protocols'
 import { UniqueFieldValidation } from './unique-field-validation'
 
-interface SutTypes {
+type SutTypes = {
   sut: UniqueFieldValidation
   uniqueValidatorStub: UniqueValidator
 }

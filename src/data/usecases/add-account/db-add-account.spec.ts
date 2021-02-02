@@ -1,7 +1,7 @@
 import { Hasher, AddAccountRepository, AddAccountModel, Account } from './db-add-account.protocols'
 import { DbAddAccount } from './db-add-account'
 
-export interface SutTypes {
+export type SutTypes = {
   sut: DbAddAccount
   hasherStub: Hasher
   addAccountRepositoryStub: AddAccountRepository
